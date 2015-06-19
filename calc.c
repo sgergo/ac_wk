@@ -5,6 +5,7 @@
 #include "types.h"
 #include "common.h"
 #include "fft4g.h"
+#include "calc.h"
 
 extern float_t ecgdata[];
 float_t timedata[ECGBIN_LENGTH + 1];
@@ -12,8 +13,11 @@ float_t freqdata[ECGBIN_LENGTH + 1];
 
 float_t compressedecgdata[ECGREC_LENGTH + 1];
 float_t decompressedecgdata[ECGREC_LENGTH + 1];
+
 float_t ac_wkdata[ECGREC_LENGTH + 1];
-int qrsdata[ECGREC_LENGTH + 1];
+int hrdata[250];
+
+// int qrsdata[ECGREC_LENGTH + 1];
 
 static void calc_copy(float_t *dst, float_t *src, int dstindex, int srcindex, int length) {
 	// Add offset
@@ -198,5 +202,48 @@ void calc_ac_wk_dct(void) {
     calc_pow2(freqdata, ECGREC_LENGTH);
     calc_idct(freqdata, ECGREC_LENGTH);
     calc_copy(ac_wkdata, freqdata, 0, 0, ECGREC_LENGTH);   
+}
+
+static int calc_findHR(float_t *data, int binlength) {
+    int i;
+    float_t max = 0;
+    int maxindex = 0;
+
+
+    for (i = 150; i < binlength; i++) {
+        if (data[i] > max) {
+            max = data[i];
+            maxindex = i;
+        }
+    }
+    
+    
+    return maxindex;
+}
+
+int calc_continuous_ac(void) {
+    int i;
+    int nextbin;
+    int hr;
+
+    i = 0;
+    nextbin = 0;
+
+    while (true) {
+        calc_copy(timedata, ecgdata, 0, nextbin, ECGREC_LENGTH);
+        calc_dct(timedata, ECGREC_LENGTH);
+        calc_pow2(timedata, ECGREC_LENGTH);
+        calc_idct(timedata, ECGREC_LENGTH);
+        hr = calc_findHR(timedata, ECGREC_LENGTH);
+        hrdata[i] = hr;
+        printf("hr: %d hrdata[i]: %d\n", hr, hrdata[i]);
+        nextbin += 1024;
+
+        if ((nextbin +  ECGREC_LENGTH) > ACFREC_LENGTH)
+            break;
+        i++;
+    }
+
+    return i;
 }
 
