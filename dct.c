@@ -13,6 +13,7 @@ extern dct_data_t dct_data;
 
 float_t timedata[ECGREC_LENGTH + 1];
 float_t freqdata[ECGREC_LENGTH + 1];
+float_t foldeddata[ECGREC_LENGTH + 1];
 float_t decompdata[ECGREC_LENGTH + 1];
 float_t ac_wkdata[ECGREC_LENGTH + 1];
 
@@ -73,16 +74,25 @@ void dct_ac_wk_dct(void) {
     calc_copy(ac_wkdata, freqdata, 0, 0, dct_data.n);   
 }
 
-void dct_ac_wk_dct2(void) {
+void dct_ac_foldedcorr(void) {
     int i;
-
 
     // timedata <- original ecg data
     calc_copy(timedata, dct_data.ts, 0, dct_data.offset, dct_data.n);
+
+    // timedata <- normalized ecg data
+    calc_norm(timedata, dct_data.n);
+
+    // timedata <- differentiated normalized ecg data
+    calc_differentiate(timedata, dct_data.n, 5);
+
+    // calc_foldedcorr(freqdata, dct_data.n);
+    calc_foldedcorr(timedata, foldeddata, dct_data.n);
+
     // transform timedata then -> timedata
-    dct_dct(timedata, dct_data.n);
+    dct_dct(foldeddata, dct_data.n);
     // freqdata <- timedata
-    calc_copy(freqdata, timedata, 0, 0, dct_data.n);
+    calc_copy(freqdata, foldeddata, 0, 0, dct_data.n);
 
     // Dismiss some values
     for (i = 0; i < dct_data.highpass; i++)
@@ -90,11 +100,8 @@ void dct_ac_wk_dct2(void) {
     for (i = dct_data.lowpass; i < dct_data.n; i++)
         freqdata[i] = 0.00;
     // inverse transform timedata -> timedata
-    dct_idct(timedata, dct_data.n);
-    // decompdata <- inverse transformed timedata
-    calc_copy(decompdata, timedata, 0, 0, dct_data.n);
-
-    calc_abs(freqdata, dct_data.n);
+    calc_pow2(freqdata, dct_data.n);
     dct_idct(freqdata, dct_data.n);
+
     calc_copy(ac_wkdata, freqdata, 0, 0, dct_data.n);   
 }

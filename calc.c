@@ -63,3 +63,18 @@ void calc_differentiate(float_t *dst, int length, int constant) {
 		dst[i] = buf;
 	}
 }
+
+void calc_foldedcorr(float_t *src, float_t *dst, int length) {
+	int i;
+	float_t buf;
+
+	dst[0] = 0;
+	dst[1] = 0;
+	dst[length-1] = 0;
+	dst[length-2] = 0;
+
+	for (i = 2; i < length - 2; i++) {
+		buf = (src[i-1] * src[i+1]) + (src[i-2] * src[i+2]); 
+		dst[i] = buf;
+	}
+}

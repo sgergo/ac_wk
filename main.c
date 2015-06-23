@@ -29,7 +29,8 @@ int main(void) {
 	dct_data.lowpass = LOWPASS;
 	dct_data.highpass = HIGHPASS;
 	dct_data.n = ECGCALC_LENGTH;
-	dct_ac_wk_dct();
+	// dct_ac_wk_dct();
+	dct_ac_foldedcorr();
 	// Init ACF parameters
 	acorr_data.acresult = acresult;
 	acorr_data.ts = ecgdata;

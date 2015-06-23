@@ -14,12 +14,12 @@
 #endif
 
 // #define ECGBIN_LENGTH 512
-#define ECGREC_LENGTH 4096
-#define ECGCALC_LENGTH 4096
-#define ECG_OFFSET 0
+#define ECGREC_LENGTH 2048
+#define ECGCALC_LENGTH 2048
+#define ECG_OFFSET 256
 
 #define LOWPASS 300
-#define HIGHPASS 5
+#define HIGHPASS 10
 
 
 #endif

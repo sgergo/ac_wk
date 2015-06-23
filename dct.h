@@ -11,6 +11,7 @@ typedef struct {
 }dct_data_t;
 
 void dct_ac_wk_dct(void);
+void dct_ac_foldedcorr(void);
 
 
 
