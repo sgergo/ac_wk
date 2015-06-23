@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "types.h"
 #include "common.h"
-#include "calc.h"
+#include "dct.h"
 #include "acorr.h"
 
 extern float_t ecgdata[];
@@ -15,20 +15,27 @@ extern float_t acresult[ECGREC_LENGTH + 1];
 
 
 acorr_data_t acorr_data;
+dct_data_t dct_data;
 
 int main(void) {
 	unsigned int i;
 	FILE *ofp;
 
-	printf("\n\n 1-D DCT test\n\n");
+	printf("\n\n 1-D DCT ACF and statistical ACF test\n\n");
 
-	
-	calc_ac_wk_dct();
+	dct_data.wkresult = ac_wkdata;
+	dct_data.ts = ecgdata;
+	dct_data.offset = ECG_OFFSET;
+	dct_data.lowpass = LOWPASS;
+	dct_data.highpass = HIGHPASS;
+	dct_data.n = ECGCALC_LENGTH;
+	dct_ac_wk_dct();
 	// Init ACF parameters
 	acorr_data.acresult = acresult;
 	acorr_data.ts = ecgdata;
-	acorr_data.maxlag = ECGREC_LENGTH;
-	acorr_data.n = ECGREC_LENGTH + 1;
+	acorr_data.offset = ECG_OFFSET;
+	acorr_data.maxlag = ECGCALC_LENGTH-1;
+	acorr_data.n = ECGCALC_LENGTH;
 	// Calculate ACF
 	acorr_calculate(&acorr_data);
 

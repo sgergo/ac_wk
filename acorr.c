@@ -11,7 +11,7 @@ static void acorr_compute_mean(acorr_data_t *ads) {
   int      i;
 
   ads->mean = 0.0;
-  for (i = 0; i < ads->n; i++)
+  for (i = ads->offset; i < (ads->n + ads->offset); i++)
     ads->mean = ads->mean + (ads->ts[i] / ads->n);
 }
 
@@ -19,7 +19,7 @@ static void acorr_compute_variance(acorr_data_t *ads) {
   int      i;
 
   ads->variance = 0.0;
-  for (i = 0; i < ads->n; i++)
+  for (i = ads->offset; i < (ads->n + ads->offset); i++)
     ads->variance = ads->variance + (pow((ads->ts[i] - ads->mean), 2.0) / ads->n);
 }
 
@@ -29,7 +29,7 @@ static float_t acorr_compute_autoc(acorr_data_t *ads, int lag) {
   int      i;
 
   autocv = 0.0;
-  for (i = 0; i < (ads->n - lag); i++)
+  for (i = ads->offset; i < ((ads->n + ads->offset) - lag); i++)
     autocv = autocv + ((ads->ts[i] - ads->mean) * \
     	(ads->ts[i + lag] - ads->mean) / (ads->n - lag));
 

@@ -3,6 +3,7 @@
 
 typedef struct {
 	float_t *ts;
+	int offset;
 	float_t *acresult;
 	float_t mean;
 	float_t variance;

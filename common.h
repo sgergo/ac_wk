@@ -13,19 +13,13 @@
 #define NMAXSQRT 64
 #endif
 
-#define ECGBIN_LENGTH 512
-#define ECGREC_LENGTH 2048
+// #define ECGBIN_LENGTH 512
+#define ECGREC_LENGTH 4096
+#define ECGCALC_LENGTH 4096
+#define ECG_OFFSET 0
 
-#define ACFBIN_OVERLAP 1024
-#define ACFBIN_START 2048
-#define ACFREC_LENGTH 149249
+#define LOWPASS 300
+#define HIGHPASS 5
 
-#define LOWPASS 512
-#define HIGHPASS 2
-#define THRESHOLD_RANGE 200
-#define FRAME 256
-// void calc_qrs_complex({0.01...0.1}, {0.15...0.2});
-#define ALPHA 0.03f
-#define GAMMA 0.10f
 
 #endif
