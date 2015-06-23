@@ -13,6 +13,7 @@ extern float_t decompdata[ECGREC_LENGTH + 1];
 extern float_t ac_wkdata[ECGREC_LENGTH + 1];
 extern float_t acresult[ECGREC_LENGTH + 1];
 
+
 acorr_data_t acorr_data;
 
 int main(void) {
@@ -21,8 +22,7 @@ int main(void) {
 
 	printf("\n\n 1-D DCT test\n\n");
 
-	// Transform-dismiss-inverse transform
-	// calc_compress_ecgdata();
+	
 	calc_ac_wk_dct();
 	// Init ACF parameters
 	acorr_data.acresult = acresult;
@@ -34,14 +34,12 @@ int main(void) {
 
 	// Output result
 	ofp = fopen("result_ch3.csv", "w");
-	fprintf(ofp, "Original, iRDFT, ACF, AC_WK\n");
-	printf("Original\tiRDFT\tACF\tAC_WK\n");
 
 	for (i = 0; i < ECGREC_LENGTH; i++) {
 		printf("%d: %f\t%f\t%f\t%f\n", i, ecgdata[i], decompdata[i], acresult[i], ac_wkdata[i]); 
 		fprintf(ofp, "%f, %f, %f, %f\n", ecgdata[i], decompdata[i], acresult[i],  ac_wkdata[i]);
-		
 	}
+
 	fclose(ofp);
 	return 0;
 }

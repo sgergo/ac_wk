@@ -5,8 +5,10 @@
 #include "types.h"
 #include "common.h"
 #include "fft4g.h"
+#include "calc.h"
 
 extern float_t ecgdata[];
+
 float_t timedata[ECGREC_LENGTH + 1];
 float_t freqdata[ECGREC_LENGTH + 1];
 float_t decompdata[ECGREC_LENGTH + 1];
@@ -162,4 +164,3 @@ void calc_ac_wk_dct(void) {
     calc_idct(freqdata, ECGREC_LENGTH);
     calc_copy(ac_wkdata, freqdata, 0, 0, ECGREC_LENGTH);   
 }
-
