@@ -6,14 +6,12 @@
 #include "acorr.h"
 
 extern float_t ecgdata[];
-extern float_t timedata[ECGBIN_LENGTH + 1];
-extern float_t freqdata[ECGBIN_LENGTH + 1];
-extern float_t ac_wkdata[ECGREC_LENGTH + 1];
 
-float_t compressedecgdata[ECGREC_LENGTH + 1];
-float_t decompressedecgdata[ECGREC_LENGTH + 1];
-int qrsdata[ECGREC_LENGTH + 1];
-float_t acresult[ECGREC_LENGTH + 1];
+extern float_t timedata[ECGREC_LENGTH + 1];
+extern float_t freqdata[ECGREC_LENGTH + 1];
+extern float_t decompdata[ECGREC_LENGTH + 1];
+extern float_t ac_wkdata[ECGREC_LENGTH + 1];
+extern float_t acresult[ECGREC_LENGTH + 1];
 
 acorr_data_t acorr_data;
 
@@ -40,8 +38,8 @@ int main(void) {
 	printf("Original\tiRDFT\tACF\tAC_WK\n");
 
 	for (i = 0; i < ECGREC_LENGTH; i++) {
-		printf("%d: %f\t%f\t%f\t%f\n", i, ecgdata[i], decompressedecgdata[i], acresult[i], ac_wkdata[i]); 
-		fprintf(ofp, "%f, %f, %f, %f\n", ecgdata[i], decompressedecgdata[i], acresult[i],  ac_wkdata[i]);
+		printf("%d: %f\t%f\t%f\t%f\n", i, ecgdata[i], decompdata[i], acresult[i], ac_wkdata[i]); 
+		fprintf(ofp, "%f, %f, %f, %f\n", ecgdata[i], decompdata[i], acresult[i],  ac_wkdata[i]);
 		
 	}
 	fclose(ofp);

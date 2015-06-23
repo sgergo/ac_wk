@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include "types.h"
 
 float_t const ecgdata[] = {

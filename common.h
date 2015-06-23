@@ -16,7 +16,7 @@
 #define ECGBIN_LENGTH 512
 #define ECGREC_LENGTH 2048
 
-#define LOWPASS 48
+#define LOWPASS 512
 #define HIGHPASS 2
 #define THRESHOLD_RANGE 200
 #define FRAME 256

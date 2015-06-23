@@ -2,7 +2,10 @@
 #include <string.h>
 #include <math.h>
 #include "types.h"
+#include "common.h"
 #include "acorr.h"
+
+float_t acresult[ECGREC_LENGTH + 1];
 
 static void acorr_compute_mean(acorr_data_t *ads) {
   int      i;
